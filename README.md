@@ -60,6 +60,13 @@ This role playbook is included in the roles files/myrepos.yml
 
 <embed src="files/myrepos.yml">
 
+
+<div class="highlight highlight-source-yaml"><pre>    -<span class="pl-s">--</span>
+<embed src="files/myrepos.yml">
+    - <span class="pl-s">myrepos</span></pre>
+</div>
+
+
 ```yaml
     ---
     - hosts: myrepos
