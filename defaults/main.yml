@@ -1,0 +1,32 @@
+---
+# defaults file for ansible-role-myrepos
+
+---
+myrepos_repo: "https://github.com/geerlingguy/myrepos.git"
+myrepos_repo_accept_hostkey: no
+myrepos_repo_local_destination: "~/Documents/myrepos"
+
+
+myrepos_remote_directories:
+
+  myrepos_home
+   
+    state   : "directory"
+    path    : "relatve/subdir"
+    owner   : "bob"
+    group   : "sales"
+    mode    : "0750"
+    recurse : "true"
+
+myrepos_home: "~/bin/mr"
+myrepos_
+myrepos_files:
+  - .bash_profile
+  - .gitignore
+  - .inputrc
+- .vimrc
+
+PERSONAL_BIN_DIR="${HOME}/bin"
+MR_DIR="${PERSONAL_BIN_DIR}/mr"
+BASH_CONFIG_FILE=~/.bashrc
+DATE_TIME_STAMP=`date +"%F_%H_%M_%S_%Z"`
