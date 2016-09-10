@@ -58,12 +58,16 @@ This role playbook is included in the roles files/myrepos.yml
 
 ![ files/myrepos.yml ]( files/myrepos.yml )
 
+<embed src="files/myrepos.yml">
+
+```yaml
     ---
     - hosts: myrepos
       become: true
       gather_facts: true
       roles:
         - myrepos
+```
 
 ### Using variables passed in as parameters
 
