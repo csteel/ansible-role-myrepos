@@ -56,7 +56,7 @@ Including an example of how to use your role (for instance, with variables passe
 
 This role playbook is included in the roles files/myrepos.yml
 
-    ![ files/myrepos.yml ]( files/myrepos.yml )
+![ files/myrepos.yml ]( files/myrepos.yml )
 
     ---
     - hosts: myrepos
