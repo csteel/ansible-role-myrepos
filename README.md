@@ -54,25 +54,16 @@ Including an example of how to use your role (for instance, with variables passe
 
 ### Basic
 
-This role playbook is included in the roles files/myrepos.yml
-
-![ files/myrepos.yml ]( files/myrepos.yml )
-
-<embed src="files/myrepos.yml">
-
-
-<div class="highlight highlight-source-yaml">
-<embed src="files/myrepos.yml">
-</div>
+This role playbook is included in the roles []( files/myrepos.yml )
 
 
 ```yaml
-    ---
-    - hosts: myrepos
-      become: true
-      gather_facts: true
-      roles:
-        - myrepos
+---
+- hosts: myrepos
+  become: true
+  gather_facts: true
+  roles:
+- myrepos
 ```
 
 ### Using variables passed in as parameters
