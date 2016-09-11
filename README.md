@@ -64,7 +64,7 @@ The main playbook might look something like this:
   name: "include the myrepos.yml playbook"
 - include: myrepos.yml
   when: "'myreposs' in {{ group_names }}"
-
+```
 
 ### Basic role playbook
 
