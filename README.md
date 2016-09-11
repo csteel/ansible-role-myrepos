@@ -52,9 +52,23 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-### Basic
+### Main playbook
 
-This role playbook is included in the roles []( files/myrepos.yml )
+The main playbook might look something like this:
+
+```yaml
+- hosts: all
+  become: false
+  gather_facts: false
+
+  name: "include the myrepos.yml playbook"
+- include: myrepos.yml
+  when: "'myreposs' in {{ group_names }}"
+
+
+### Basic role playbook
+
+[ files/myrepos.yml ]( files/myrepos.yml ) is an example of a working playbook for this role  that can be included in a main playbook.
 
 
 ```yaml
@@ -68,9 +82,16 @@ This role playbook is included in the roles []( files/myrepos.yml )
 
 ### Using variables passed in as parameters
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+This example would only install myrepo for the user with the uid of 1001
+
+```yaml
+---
+- hosts: myrepos
+  become: true
+  gather_facts: true
+  roles:
+     - { myrepos, myrepos_min_uid: 1001, myrepos_max_uid: 1001 } 
+```
 
 License
 -------
