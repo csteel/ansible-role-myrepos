@@ -29,18 +29,35 @@ Role Variables
 Description of the settable variables including those that can/should be set via parameters to the role.
 
 ### defaults/main.yml
- 
-    ---
-    # defaults file for ansible-role-myrepos
-    
-    myrepos_myrepos_source_repository: 'https://github.com/csteel/myrepos'
-    myrepos_uid_min                  : 1000
-    myrepos_uid__max                 : 60000
-    myrepos_bin_dir                  : 'bin/myrepos'
 
-### vars/main.yml
+```yaml
 
-  Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+---
+# defaults file for ansible-role-myrepos
+
+myrepos_myrepos_source_repository: 'https://github.com/csteel/myrepos'
+myrepos_uid_min                  : 1000
+myrepos_uid__max                 : 60000
+myrepos_bin_dir                  : 'bin/myrepos'
+
+
+### group_vars/developer/myrepos_defaults
+
+### host_vars/<host_name>/myrepos_users.yml
+
+
+
+```yaml
+
+# file: host_vars/<host_name>/myrepos_users.yml
+
+myrepos_myrepos_source_repository: 'https://github.com/csteel/myrepos'
+myrepos_system_myrepos_users     : []
+myrepos_uid_min                  : 1000
+myrepos_uid__max                 : 60000
+myrepos_bin_dir                  : 'bin/myrepos'
+
+```
 
 Dependencies
 ------------
@@ -50,34 +67,38 @@ A list of other roles hosted on Galaxy should go here, plus any details in regar
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-### Main playbook
-
-The main playbook might look something like this:
-
-```yaml
-- hosts: all
-  become: false
-  gather_facts: false
-
-  name: "include the myrepos.yml playbook"
-- include: myrepos.yml
-  when: "'myreposs' in {{ group_names }}"
-```
-
 ### Basic role playbook
 
 [ files/myrepos.yml ]( files/myrepos.yml ) is an example of a working playbook for this role  that can be included in a main playbook.
 
 
 ```yaml
+
 ---
+# file: myrepos.yml
+
 - hosts: myrepos
   become: true
-  gather_facts: true
+  gather_facts: true 
   roles:
-- myrepos
+    - myrepos
+
+```
+
+### Main playbook
+
+The main playbook might look something like this:
+
+```yaml
+
+# file: systems.yml
+
+- hosts: all
+  become: false
+  gather_facts: false
+
+- include: myrepos.yml
+
 ```
 
 ### Using variables passed in as parameters
@@ -85,12 +106,14 @@ The main playbook might look something like this:
 This example would only install myrepo for the user with the uid of 1001
 
 ```yaml
+
 ---
 - hosts: myrepos
   become: true
   gather_facts: true
   roles:
      - { myrepos, myrepos_min_uid: 1001, myrepos_max_uid: 1001 } 
+
 ```
 
 License
