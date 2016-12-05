@@ -143,6 +143,11 @@ ln -s ~/bin/myrepos/mr ~/bin/mr
 
 ## add myrepos menu entry
 
+### add one workd item title to ~/bin/acemenu/menuitems.txt
+
+echo "myrepos" > ~/bin/acemenu/menuitems.txt
+
+### Create contents of ~/bin/acemenu/helpfiles/myrepos.txt
 ```markdown
 
 # myrepos
@@ -159,4 +164,6 @@ Manage multiple repositories of any type (git, mercurial, svn...) using single c
 
 ## tests
 
+### check myrepos version command.
+mr --version
 
