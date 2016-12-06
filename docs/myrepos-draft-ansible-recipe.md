@@ -23,21 +23,26 @@ sudo apt-get install -y git
 
 ## Create a list of user names on the target system.
 
+```python
 - name: "get remote systems users within a designated UID range"
   shell: >
     awk -F':' -v "min={{ myrepos_uid_min }}" -v "max={{ myrepos_uid_max }}" '{ if ( $3 >= min && $3 <= max ) print $0}' /etc/passwd | cut -d: -f1
   changed_when: false
   register: users_in_uid_range
+```
 
 ## Retrieve home directories for users in our designated UID range.
 
+```python
 - name: "discover home directories including those mounted by LDAP"
   shell: >
     getent passwd {{ item }} | cut -d: -f6
   changed_when: false
   register: user_homes
   with_items: users_in_uid_range.stdout_lines
+```
 
+```python
 ## ensure tartget users have a personal bin directory
 
 - name: "ensure for ~/bin for users in our uid range"
@@ -50,6 +55,7 @@ sudo apt-get install -y git
     group   : '{{ item.stdout | basename }}'
     mode    : '0740'
   with_items: "{{ user_homes.results }}"
+```
 
 ## clone myrepos project
 
@@ -57,7 +63,9 @@ sudo apt-get install -y git
 # cd ~/bin
 # git clone https://github.com/joeyh/myrepos.git /home/<username>myrepos
 
-# Example git checkout from Ansible Playbooks
+```python
+## Example git checkout from Ansible Playbooks
+
 - git:
     repo: 'https://github.com/csteel/myrepos.git'
     dest: '{{ item.stdout }}/bin/{{ myrepos_myrepos_bin_dir }}'
@@ -67,6 +75,7 @@ sudo apt-get install -y git
     update: yes
     version: 1.20160123
   with_items: "{{ user_homes.results }}"
+```python
 
 ## ensure mr executable
 
@@ -107,6 +116,7 @@ fi
 
 ```
 
+```python
 - name: "ensure for our path block in ~/.profile"
   become: true
   blockinfile:
@@ -123,6 +133,7 @@ fi
       fi
   with_items: "{{ user_homes.results }}"
 #  when: ansible_distribution == "Ubuntu" 
+```
 
 ## create link to mr exe in ~/bin
 
