@@ -2,13 +2,12 @@
 ansible-role-myrepos
 ====================
 
-Myrepos is an Ansble role to install and configure **myrepos** for one or more users personal ~/bin directory(s). It gathers users home directories using 
-
+ansible-role-myrepos is an Ansble role that can be used to install and configure **myrepos** for one or more users personal ~/bin directory(s).
 
 Description
 -----------
 
-myrepos is a tool that allows you to manage all your version control repositories. The `mr` command can be used to update all of your repositories at once, push out all your local changes and more. It can support any version controll system and provides out of the box support for git, svn, mercurial, bzr, darcs, cvs, fossil and veracity.
+myrepos is a tool that allows you to manage all your version control repositories. The `mr` command can be used to update all of your repositories at once, push out all your local changes and more. It can support any version control system and provides out of the box support for git, svn, mercurial, bzr, darcs, cvs, fossil and veracity.
 
 
 References
@@ -47,12 +46,15 @@ cp roles/myrepos/files/group_vars/myrepos/myrepos_defaults.yml group_vars/myrepo
 ```yaml
 ```
 
-
 Dependencies
 ------------
 
-* [ensure_dir]()
-* [skel]()
+* [csteel/ansible-role-ensure_dirs](https://github.com/cjsteel/ansible-role-ensure_dirs)
+* [cjsteel/ansible-role-skel](https://github.com/cjsteel/ansible-role-skel)
+
+### myrepos/meta/main.yml
+
+See this file for dependancies example
 
 Example Playbook
 ----------------
