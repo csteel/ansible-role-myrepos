@@ -36,18 +36,22 @@
 
 ## Clone repo
 
-- git:
-    repo: https://github.com/csteel/myrepos.git #git@github.com:csteel/myrepos.git
-    dest: /etc/skel/bin/myrepos
+- name: "clone the myrepos repository to /etc/skel/bin/myrepos"
+  become: true
+  git:
+    repo   : https://github.com/csteel/myrepos.git #git@github.com:csteel/myrepos.git
+    dest   : /etc/skel/bin/myrepos
     version: 1.20160123
     accept_hostkey: no
   when: stat_myrepos_result.stat.exists == false
 
-
-- file:
-    src: '/etc/skel/bin/myrepos/mr'
-    dest: '/etc/skel/bin/mr'
+- name: "Create sym link /etc/skel/bin/mr > /etc/skel/bin/myrepos/mr"
+  become: true
+  file:
+    src  : '/etc/skel/bin/myrepos/mr'
+    dest : '/etc/skel/bin/mr'
     state: link                     # file,directory,link,hard,touch,absent
+    mode : 0755
 #    force: yes    
 #  with_items:
 #    - { src: 'x', dest: 'y' }
@@ -55,6 +59,13 @@
 
 # install any helper scripts
 
+#- name: "ensure that our .profile includes our bin dirs"
+#  become: true
+-  lineinfile:
+    dest: '/etc/skel/.bashrc'
+    regexp: '^PATH='
+    line: 'PATH="$HOME/bin:$HOME/.local/bin:$PATH"'
+   become: true
 # configure mr
 
 
