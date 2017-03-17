@@ -1,2 +1,61 @@
 ---
 # tasks file for ansible-role-myrepos
+
+# previous install?
+
+# was an myrepos directory created before now?
+
+- name: "Do we already have an myrepos directory?"
+  stat:
+    path: '/etc/skel/bin/myrepos'
+  register: stat_myrepos_result
+
+- name: "check value of stat_myrepos_result"
+  debug:
+    var=stat_myrepos_result
+
+# ensure for requirements
+
+## apt packages
+
+- name: "update apt cache"
+  become: true
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  tags: [ 'packages' ]
+
+- name: Update repositories cache and install "foo" package
+  become: true
+  apt:
+    name : '{{ item }}'
+    state: 'present'
+  with_items:
+    - git
+    - perl-doc
+
+## Clone repo
+
+- git:
+    repo: https://github.com/csteel/myrepos.git #git@github.com:csteel/myrepos.git
+    dest: /etc/skel/bin/myrepos
+    version: 1.20160123
+    accept_hostkey: no
+  when: stat_myrepos_result.stat.exists == false
+
+
+- file:
+    src: '/etc/skel/bin/myrepos/mr'
+    dest: '/etc/skel/bin/mr'
+    state: link                     # file,directory,link,hard,touch,absent
+#    force: yes    
+#  with_items:
+#    - { src: 'x', dest: 'y' }
+#    - { src: 'z', dest: 'k' }
+
+# install any helper scripts
+
+# configure mr
+
+
+

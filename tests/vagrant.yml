@@ -1,0 +1,6 @@
+# test file for bash
+---
+- hosts: all
+  become: vagrant
+  roles:
+    - ../../
