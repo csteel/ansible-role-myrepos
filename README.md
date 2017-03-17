@@ -1,6 +1,6 @@
 
-Role Name
-=========
+ansible-role-myrepos
+====================
 
 Myrepos is an Ansble role to install and configure **myrepos** for one or more users personal ~/bin directory(s). It gathers users home directories using 
 
@@ -40,81 +40,19 @@ cp roles/myrepos/files/group_vars/myrepos/myrepos_defaults.yml group_vars/myrepo
 #### content example
 
 ```shell
----
-# file: group_vars/myrepos/myrepos_defaults.yml
-
-myrepos_repo: "https://github.com/geerlingguy/myrepos.git"
-myrepos_repo_accept_hostkey: no
-myrepos_repo_local_destination: "~/Documents/myrepos"
-
-
-myrepos_remote_directories:
-
-  myrepos_home
-   
-    state   : "directory"
-    path    : "relatve/subdir"
-    owner   : "bob"
-    group   : "sales"
-    mode    : "0750"
-    recurse : "true"
-
-myrepos_home: "~/bin/mr"
-myrepos_
-myrepos_files:
-  - .bash_profile
-  - .gitignore
-  - .inputrc
-  - .vimrc
-
-#PERSONAL_BIN_DIR="${HOME}/bin"
-#MR_DIR="${PERSONAL_BIN_DIR}/mr"
-#BASH_CONFIG_FILE=~/.bashrc
-#DATE_TIME_STAMP=`date +"%F_%H_%M_%S_%Z"`
-
 ```
-
-
-
-group_vars/myrepos/myrepos_defaults.yml
-
-Description of the settable variables including those that can/should be set via parameters to the role.
 
 ### defaults/main.yml
 
 ```yaml
-
----
-# defaults file for ansible-role-myrepos
-
-myrepos_myrepos_source_repository: 'https://github.com/csteel/myrepos'
-myrepos_uid_min                  : 1000
-myrepos_uid__max                 : 60000
-myrepos_bin_dir                  : 'bin/myrepos'
-
-
-### group_vars/developer/myrepos_defaults
-
-### host_vars/<host_name>/myrepos_users.yml
-
-
-
-​```yaml
-
-# file: host_vars/<host_name>/myrepos_users.yml
-
-myrepos_myrepos_source_repository: 'https://github.com/csteel/myrepos'
-myrepos_system_myrepos_users     : []
-myrepos_uid_min                  : 1000
-myrepos_uid__max                 : 60000
-myrepos_bin_dir                  : 'bin/myrepos'
 ```
 
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+* [ensure_dir]()
+* [skel]()
 
 Example Playbook
 ----------------
@@ -123,6 +61,11 @@ Example Playbook
 
 [ files/myrepos.yml ]( files/myrepos.yml ) is an example of a working playbook for this role  that can be included in a main playbook.
 
+```shell
+cp roles/myrepos/files/myrepos.yml .
+```
+
+Example
 
 ```yaml
 
@@ -164,7 +107,6 @@ This example would only install myrepo for the user with the uid of 1001
   gather_facts: true
   roles:
      - { myrepos, myrepos_min_uid: 1001, myrepos_max_uid: 1001 } 
-
 ```
 
 
@@ -173,8 +115,17 @@ License
 
 MIT
 
-
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Christopher Steel  
+Systems Administrator  
+McGill Centre for Integrative Neuroscience  
+Montreal Neurological Institute  
+McGill University  
+3801 University Street  
+Montréal, QC, Canada H3A 2B4  
+Tel. No. +1 514 398-2494 
+E-mail: christopherDOTsteel@mcgill.ca  
+[MCIN](http://mcin-cnim.ca/), [theneuro.ca](http://theneuro.ca)  
+
