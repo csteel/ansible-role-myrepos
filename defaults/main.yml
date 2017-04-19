@@ -9,8 +9,8 @@ myrepos_remote_directories:
    
     state   : 'directory'
     path    : 'src'
-    owner   : 'cjs'
-    group   : 'cjs'
+    owner   : 'root'
+    group   : 'root'
     mode    : '0750'
     recurse : true
 
@@ -19,6 +19,11 @@ myrepos_remote_directories:
 #  - .gitignore
 #  - .inputrc
 #  - .vimrc
+
+#project_deployment_user_name: e
+#project_controller_user_name: 
+
+
 
 #PERSONAL_BIN_DIR="${HOME}/bin"
 #MR_DIR="${PERSONAL_BIN_DIR}/mr"
