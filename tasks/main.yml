@@ -7,7 +7,7 @@
 
 - name: "Do we already have an myrepos directory?"
   stat:
-    path: '/etc/skel/bin/myrepos'
+    path: '/etc/skel/bin/mr'
   register: stat_myrepos_result
 
 - name: "check value of stat_myrepos_result"
@@ -40,33 +40,12 @@
   become: true
   git:
     repo   : https://github.com/csteel/myrepos.git #git@github.com:csteel/myrepos.git
-    dest   : /etc/skel/bin/myrepos
+    dest   : /etc/skel/bin/mr
     version: 1.20160123
     accept_hostkey: no
   when: stat_myrepos_result.stat.exists == false
 
-- name: "Create sym link /etc/skel/bin/mr > /etc/skel/bin/myrepos/mr"
-  become: true
-  file:
-    src  : '/etc/skel/bin/myrepos/mr'
-    dest : '/etc/skel/bin/mr'
-    state: link                     # file,directory,link,hard,touch,absent
-    mode : 0755
-#    force: yes    
-#  with_items:
-#    - { src: 'x', dest: 'y' }
-#    - { src: 'z', dest: 'k' }
-
-# install any helper scripts
-
-#- name: "ensure that our .profile includes our bin dirs"
-#  become: true
--  lineinfile:
-    dest: '/etc/skel/.bashrc'
-    regexp: '^PATH='
-    line: 'PATH="$HOME/bin:$HOME/.local/bin:$PATH"'
-   become: true
-# configure mr
+# Remove users alias when myrepos_state != present
 
 
 

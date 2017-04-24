@@ -17,6 +17,20 @@ dependencies:
         mode: '0755'
         state: 'directory' # options are 'directory' or 'absent'
 
+      - name: "ensure we have a .bash_aliases entry for myrepos"
+        type: 'blockinfile'
+        marker: '## {mark} ANSIBLE MANAGED BLOCK in .bash_aliases entry for myrepos'
+        path  : "/etc/skel/.bash_aliases"
+        insertafter: "EOF"
+        block: |
+          #
+          echo 'creating alias "mr"'
+          alias mr="~/bin/mr/mr --config ~/bin/mr/mrconfig"
+          #
+        state: "present"
+
+
+
 galaxy_info:
   author: your name
   description: 
