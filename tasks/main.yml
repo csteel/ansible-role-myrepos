@@ -7,7 +7,7 @@
 
 - name: "Do we already have an myrepos directory?"
   stat:
-    path: '/etc/skel/bin/mr'
+    path: '{{ myrepos_dir_path }}'
   register: stat_myrepos_result
 
 - name: "check value of stat_myrepos_result"
@@ -25,7 +25,7 @@
     cache_valid_time: 3600
   tags: [ 'packages' ]
 
-- name: Update repositories cache and install "foo" package
+- name: "Update apt cache and install myrepo reqirements package"
   become: true
   apt:
     name : '{{ item }}'
@@ -36,11 +36,11 @@
 
 ## Clone repo
 
-- name: "clone the myrepos repository to /etc/skel/bin/myrepos"
+- name: "clone the myrepos repository to '{{ myrepos_dir_path }}'"
   become: true
   git:
     repo   : https://github.com/csteel/myrepos.git #git@github.com:csteel/myrepos.git
-    dest   : /etc/skel/bin/mr
+    dest   : '{{ myrepos_dir_path }}'
     version: 1.20160123
     accept_hostkey: no
   when: stat_myrepos_result.stat.exists == false
