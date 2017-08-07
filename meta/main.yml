@@ -30,7 +30,7 @@ dependencies:
 
       - name : "ensure for /etc/skel/.mrconfig"
         path : '/etc/skel/.mrconfig'
-        src  : 'files/mrconfig'
+        src  : 'files/Ubuntu/16.04/etc/skel/.mrconfig'
         force : no
         state: "copy"
 
