@@ -28,11 +28,11 @@ dependencies:
 
 # ensure for any copies
 
-#      - name : "ensure for /etc/skel/bin/acemenu/about.txt"
-#        path : '/etc/skel/{{ acemenu_help_dir }}/about.txt'
-#        src  : '{{ acemenu_about_description_path }}'
-#        force : no
-#        state: "copy"
+      - name : "ensure for /etc/skel/.mrconfig"
+        path : '/etc/skel/.mrconfig'
+        src  : 'files/mrconfig'
+        force : no
+        state: "copy"
 
 # ensure for any templates
 
@@ -44,17 +44,16 @@ dependencies:
 
 # ensure for any blockinfile's
 
-#      - name: "ensure add ~/bin and ~/.local/bin to users path"
-#        type: 'blockinfile'
-#        marker: '## {mark} ANSIBLE MANAGED BLOCK in .bash_aliases entry for myrepos'
-#        path  : "/etc/skel/.bash_aliases"
-#        insertafter: "EOF"
-#        block: |
-#          #
-#          # set PATH so it includes user's private bin directories
-#          PATH="$HOME/bin:$HOME/.local/bin:$PATH"
-#          #
-#        state: "present"
+      - name: "ensure /etc/skel/.mrconfig entry for acemenu"
+        type: 'blockinfile'
+        marker: '## {mark} ANSIBLE MANAGED BLOCK /etc/skel/.mrconfig entry for myrepos'
+        path  : "/etc/skel/.mrconfig"
+        insertafter: "EOF"
+        block: |
+           [bin/acemenu]
+           checkout = git clone 'https://github.com/cjsteel/ansible-role-acemenu.git' 'acemenu'
+
+        state: "present"
 
 # ensure for any non relative sym links
 
