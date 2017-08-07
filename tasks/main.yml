@@ -45,6 +45,8 @@
     accept_hostkey: 'no'
   when: myrepos_install_to_users_home == 'true'
   tags: [ 'myrepos', 'clone' ]
+
+
 # Remove users alias when myrepos_state != present
 
 
