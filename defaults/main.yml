@@ -1,7 +1,9 @@
 ---
 # file: project/roles/ansible-role-myrepos/defaults/main.yml
 
-myrepos_dir_path: '/etc/skel/bin/myrepos'
+myrepos_install_to_users_home: 'false'
+
+myrepos_dir_path: '/etc/skel/.local/bin/myrepos'
 
 myrepos_remote_directories:
 

@@ -2,5 +2,9 @@
 ---
 - hosts: all
   become: vagrant
+  vars:
+
+    - myrepos_install_to_users_home: 'false'
+
   roles:
     - ../../

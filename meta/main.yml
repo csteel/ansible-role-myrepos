@@ -2,54 +2,82 @@
 # file: roles/myrepos/meta/main.yml
 
 dependencies:
-#  - role: ensure_dirs
-#    tags: ['minc', 'ensure_dirs']
-#    ensure_dirs_on_remote: '{{ minc_ensure_dirs_on_remote }}'
-#    ensure_dirs_on_local : '{{minc_ensure_dirs_on_local }}'
 
   - role: skel
     become: true
-    tags: ['minc', 'skel']
+    tags: ['myrepos', 'skel']
     skel_host_entries:
 
-      - name: 'meta/main.yml entry for /etc/skel/bin'
-        path: '/etc/skel/bin'
+# ensure for directories
+
+      - name: "Ensure for dir /etc/skel/.local"
+        path  : '/etc/skel/.local/bin'
+        user  : 'root'
+        group : 'root'
         mode: '0755'
         state: 'directory' # options are 'directory' or 'absent'
 
-#      - name: "ensure we have a .bash_aliases entry for myrepos"
+# ensure for clones
+
+      - name : "git clone https://github.com/csteel/myrepos.git to /etc/skel/.local/bin/myrepos"
+        repo  : 'https://github.com/csteel/myrepos.git'
+        dest  : '/etc/skel/.local/bin/myrepos'
+        clone : yes
+
+# ensure for any file touches
+
+# ensure for any copies
+
+#      - name : "ensure for /etc/skel/bin/acemenu/about.txt"
+#        path : '/etc/skel/{{ acemenu_help_dir }}/about.txt'
+#        src  : '{{ acemenu_about_description_path }}'
+#        force : no
+#        state: "copy"
+
+# ensure for any templates
+
+#      - name : 'template /etc/skel/bin/acemenu/menu.sh'
+#        src  : '{{ acemenu_menu_template_src }}'
+#        path : '/etc/skel/{{ acemenu_bin_dir }}/menu.sh'
+#        mode : '0755'
+#        state: 'template' # options are 'template' or 'absent'
+
+# ensure for any blockinfile's
+
+#      - name: "ensure add ~/bin and ~/.local/bin to users path"
 #        type: 'blockinfile'
 #        marker: '## {mark} ANSIBLE MANAGED BLOCK in .bash_aliases entry for myrepos'
 #        path  : "/etc/skel/.bash_aliases"
 #        insertafter: "EOF"
 #        block: |
 #          #
-#          echo 'creating alias "mr"'
-#          alias mr="~/bin/mr/mr" # --config ~/bin/mr/mrconfig"
+#          # set PATH so it includes user's private bin directories
+#          PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 #          #
 #        state: "present"
 
+# ensure for any non relative sym links
 
+# ensure for any relative sym links
+
+      - name : "create relative link in /etc/skel/.local/bin mr/myrepos/mr"
+        link_name   : 'mr'
+        link_target : 'myrepos/mr'
+        link_dir    : '/etc/skel/.local/bin'
+        state: 'relative_link'
 
 galaxy_info:
-  author: your name
-  description: 
+  author: Christopher Steel
+  description: a role to install myrepos.
   company: your company (optional)
   
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
   # issue_tracker_url: http://example.com/issue/tracker
   
-  # Some suggested licenses:
-  # - BSD (default)
-  # - MIT
-  # - GPLv2
-  # - GPLv3
-  # - Apache
-  # - CC-BY
-  license: license (GPLv2, CC-BY, etc)
+  license: license MIT
   
-  min_ansible_version: 1.2
+  min_ansible_version: 2.1.1.0
 
   # Optionally specify the branch Galaxy will use when accessing the GitHub
   # repo for this role. During role install, if no tags are available,

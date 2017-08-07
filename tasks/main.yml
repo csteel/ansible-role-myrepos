@@ -5,14 +5,16 @@
 
 # was an myrepos directory created before now?
 
-- name: "Do we already have an myrepos directory?"
-  stat:
-    path: '{{ myrepos_dir_path }}'
-  register: stat_myrepos_result
+#- name: "Do we already have an myrepos directory?"
+#  stat:
+#    path: '{{ myrepos_dir_path }}'
+#  register: stat_myrepos_result
+#  when: myrepos_install_to_users_home == 'true'
 
-- name: "check value of stat_myrepos_result"
-  debug:
-    var=stat_myrepos_result
+#- name: "check value of stat_myrepos_result"
+#  debug:
+#    var=stat_myrepos_result.stat.exists
+#  when: myrepos_install_to_users_home == 'true'
 
 # ensure for requirements
 
@@ -34,17 +36,15 @@
     - git
     - perl-doc
 
-## Clone repo
-
-- name: "clone the myrepos repository to '{{ myrepos_dir_path }}'"
+- name: "clone myrepos"
   become: true
   git:
-    repo   : https://github.com/csteel/myrepos.git #git@github.com:csteel/myrepos.git
+    repo   : 'https://github.com/csteel/myrepos.git' #git@github.com:csteel/myrepos.git
     dest   : '{{ myrepos_dir_path }}'
-    version: 1.20160123
-    accept_hostkey: no
-  when: stat_myrepos_result.stat.exists == false
-
+    version: '1.20160123'
+    accept_hostkey: 'no'
+  when: myrepos_install_to_users_home == 'true'
+  tags: [ 'myrepos', 'clone' ]
 # Remove users alias when myrepos_state != present
 
 
