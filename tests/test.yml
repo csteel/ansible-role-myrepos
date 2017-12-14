@@ -15,12 +15,6 @@
     - set_fact: fact_role_path="{{ lookup('pipe','pwd')|dirname }}"
     - debug: var=fact_role_path
 
-#    - set_fact: fact_role_name="{{ lookup('pipe','pwd')|dirname|basename }}"
-#    - debug: var=fact_role_name2
-
-
-#    - set_fact: ansible_user='ubuntu'
-
     - name: "Ensure that our target has python2.x for Ansible gather facts (Sometimes Ubuntu 16.04 does not)"
       raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
       register: output
@@ -60,5 +54,4 @@
 
   roles:
 
-     - ../../
-#    - csteel.myrepos
+    - ../../

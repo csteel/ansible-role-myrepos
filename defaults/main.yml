@@ -24,8 +24,8 @@ myrepos_package_state    : 'present'
 myrepos_package_version  : '2.0.1'
 myrepos_package_filename : "vagrant_{{ myrepos_package_version }}_i686.deb"
 
-myrepos_controller_resources_dir : '{{ myrepos_controller_resources_root }}/sw/vagrant/debs'
-myrepos_deployment_resources_dir : '{{ myrepos_deployment_resources_root }}/vagrant/debs'
+myrepos_controller_resources_dir : '{{ myrepos_controller_resources_root }}/tests/sw/vagrant/debs'
+myrepos_deployment_resources_dir : '{{ myrepos_deployment_resources_root }}/tests/sw/vagrant/debs'
 
 # /tests/sw/{{ ansible_distribution| lower }}/{{ ansible_distribution_version }}/miniconda'
 # /tests/sw/{{ ansible_distribution| lower }}/{{ ansible_distribution_version }}/miniconda'
@@ -151,6 +151,14 @@ myrepos_resources_on_remote:
     path  : '/etc/skel/.local/bin'
     owner : 'root'
     group : 'root'
+    mode  : '0755'
+
+  myrepos_remote_directories2:
+
+    state : 'directory' # options are 'directory' or 'absent'
+    path  : '{{ myrepos_deployment_resources_dir }}'
+    owner : '{{ myrepos_deployment_user }}'
+    group : '{{ myrepos_deployment_user }}'
     mode  : '0755'
 
   myrepos_remote_clones:
