@@ -1,8 +1,0 @@
----
-# file: myrepos.yml
-
-- hosts: myrepos
-  become: true
-  gather_facts: true 
-  roles:
-    - myrepos

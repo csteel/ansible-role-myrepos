@@ -1,7 +1,0 @@
-# file: systems.yml
-
-- hosts: all
-  become: false
-  gather_facts: false
-
-- include: myrepos.yml

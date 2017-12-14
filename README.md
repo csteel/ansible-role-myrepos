@@ -1,132 +1,82 @@
-ansible-role-myrepos
-====================
+# roles/myrepos/README.md
 
-ansible-role-myrepos is an Ansble role that can be used to install and configure **myrepos** for one or more users personal ~/bin directory(s).
+[![Build Status](https://travis-ci.org/cjsteel/myrepos.svg?branch=master)](https://travis-ci.org/cjsteel/myrepos)
+[![Travis CI](http://img.shields.io/travis/csteel/myrepos/default.svg?style=flat)](http://travis-ci.org/csteel/myrepos/default)
+[![Platforms](http://img.shields.io/badge/platforms-debian%20/%20ubuntu-lightgrey.svg?style=flat)](#)
 
-Description
------------
+## Description
 
-myrepos is a tool that allows you to manage all your version control repositories. The `mr` command can be used to update all of your repositories at once, push out all your local changes and more. It can support any version control system and provides out of the box support for git, svn, mercurial, bzr, darcs, cvs, fossil and veracity.
+myrepos is an Ansible role used to  
 
+## Recommended
 
-References
-----------
+Running Ansible in a virtual environment allows for a lot of testing flexibility.
 
-* [ getting started with myrepos ]( https://myrepos.branchable.com/ )
-* [ https://github.com/joeyh/myrepos ]( https://github.com/joeyh/myrepos )
+* [docs/ansible-setup](docs/ansible-setup.md)
 
+## Requirements
 
-Requirements
-------------
+* Ansible
 
-Pre-requisites not covered by Ansible itself include:
+## Variables
 
-* One or more installed version control systems.
-* [ Ansible role ensure_dirs ]( https://github.com/csteel/ansible-role-ensure_dirs )
+### project_name/myrepos.yml
 
+* [example_playbook.yml](files/example_playbook.yml)
 
-Role Variables
---------------
-
-###  group_vars/myrepos/myrepos_defaults.yml
+To install:
 
 ```shell
-mkdir -p group_vars/myrepos
-cp roles/myrepos/files/group_vars/myrepos/myrepos_defaults.yml group_vars/myrepos/.
+cd project_directory
+cp roles/myrepos/files/example_playbook.yml myrepos.yml
+# edit if required
+nano myrepos.yml
 ```
 
-#### content example
+### project_name/site.yml
+
+* [example_myrepos.yml](files/example_site.yml)
+
+From the projects main directory run the following:
+
+```yaml
+cp roles/myrepos/files/example_playbook.yml myrepos.yml
+cat myrepos.yml
+```
+
+### project/group_vars/all/project_defaults.yml
+
+[files/group_vars/all/example_defaults.yml](files/group_vars/all/example_defaults.yml)
+
+```yaml
+cp roles/myrepos/files/group_vars/all/example_defaults.yml group_vars/all/project_defaults.yml
+cat group_vars/all/project_defaults.yml
+```
+
+## Testing
+
+Move into the role directory and run vagrant:
 
 ```shell
+cd roles/myrepos
+vagrant up
 ```
 
-### defaults/main.yml
+## Authors and License
 
-```yaml
-```
+- [Christopher Steel](http://mcin-cnim.ca/) | [e-mail](mailto:christopher.steel@mcgill.ca)
+- [John Le](http://mcin-cnim.ca/) | [e-mail](mailto:john.le@mcgill.ca)
+- [Andy Teng](http://mcin-cnim.ca/) | [e-mail](xiaoqiu.teng@mcgill.ca)
 
-Dependencies
-------------
+License: [MIT](https://tldrlegal.com/license/mit-license)
 
-* [csteel/ansible-role-ensure_dirs](https://github.com/cjsteel/ansible-role-ensure_dirs)
-* [cjsteel/ansible-role-skel](https://github.com/cjsteel/ansible-role-skel)
+***
+## Open Science
 
-### myrepos/meta/main.yml
+The Neuro has adopted the principles of Open Science. We are inspired by the likes of the Allen Institute for Brain Science, the National Institutes of Health's Human Connectome project, and the Human Genome project. For additional information, please see [Open Science at the Neuro](https://www.mcgill.ca/neuro/open-science-0).
 
-See this file for dependancies example
+![neuro](imgs/mcin-neuro-logo.png)
 
-Example Playbook
-----------------
+  
 
-### Basic role playbook
-
-[ files/myrepos.yml ]( files/myrepos.yml ) is an example of a working playbook for this role  that can be included in a main playbook.
-
-```shell
-cp roles/myrepos/files/myrepos.yml .
-```
-
-Example
-
-```yaml
-
----
-# file: myrepos.yml
-
-- hosts: myrepos
-  become: true
-  gather_facts: true 
-  roles:
-    - myrepos
-```
-
-### Main playbook
-
-The main playbook might look something like this:
-
-```yaml
-
-# file: systems.yml
-
-- hosts: all
-  become: false
-  gather_facts: false
-
-- include: myrepos.yml
-
-```
-
-### Using variables passed in as parameters
-
-This example would only install myrepo for the user with the uid of 1001
-
-```yaml
-
----
-- hosts: myrepos
-  become: true
-  gather_facts: true
-  roles:
-     - { myrepos, myrepos_min_uid: 1001, myrepos_max_uid: 1001 } 
-```
-
-
-License
--------
-
-MIT
-
-Author Information
-------------------
-
-Christopher Steel  
-Systems Administrator  
-McGill Centre for Integrative Neuroscience  
-Montreal Neurological Institute  
-McGill University  
-3801 University Street  
-Montréal, QC, Canada H3A 2B4  
-Tel. No. +1 514 398-2494 
-E-mail: christopherDOTsteel@mcgill.ca  
-[MCIN](http://mcin-cnim.ca/), [theneuro.ca](http://theneuro.ca)  
-
+* ansible-role-myrepos generated using [galaxy-role-skeleton](https://github.com/cjsteel/galaxy-role-skeleton)

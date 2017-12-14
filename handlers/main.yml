@@ -1,2 +1,1 @@
----
-# handlers file for ansible-role-myrepos
+--- # roles/myrepos/handlers/main.yml

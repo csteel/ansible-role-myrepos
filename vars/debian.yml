@@ -1,0 +1,4 @@
+--- # roles/myrepos/vars/debian.yml
+
+# Debian specific vars
+myrepos_package_extension: 'deb'

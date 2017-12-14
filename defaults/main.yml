@@ -1,33 +1,234 @@
 ---
-# file: project/roles/ansible-role-myrepos/defaults/main.yml
+# roles/myrepos/defaults/main.yml
 
-myrepos_install_to_users_home: 'false'
+myrepos_debug : false
 
-myrepos_dir_path: '/etc/skel/.local/bin/myrepos'
+myrepos_controller_user           : '{{ project_controller_user_name }}'
+myrepos_controller_home           : '{{ project_controller_user_home }}'
+myrepos_controller_resources_root : '{{ project_controller_resources_home }}'
 
-myrepos_remote_directories:
+myrepos_deployment_user           : '{{ project_deployment_user_name }}'
+myrepos_deployment_home           : '{{ project_deployment_user_home }}'
+myrepos_deployment_resources_root : '{{ project_deployment_resources_home }}'
 
-  myrepos_home:
-   
-    state   : 'directory'
-    path    : 'src'
-    owner   : 'root'
-    group   : 'root'
-    mode    : '0750'
-    recurse : true
+## atomic versioning example
+#
+#myrepos_major             : '0'
+#myrepos_moderate_revision : '0'
+#myrepos_minor_revision    : '1'
+#myrepos_build             : ''
 
-#myrepos_files:
-#  - .bash_profile
-#  - .gitignore
-#  - .inputrc
-#  - .vimrc
+## Package #
 
-#project_deployment_user_name: e
-#project_controller_user_name: 
+myrepos_package_state    : 'present'
+myrepos_package_version  : '2.0.1'
+myrepos_package_filename : "vagrant_{{ myrepos_package_version }}_i686.deb"
+
+myrepos_controller_resources_dir : '{{ myrepos_controller_resources_root }}/sw/vagrant/debs'
+myrepos_deployment_resources_dir : '{{ myrepos_deployment_resources_root }}/vagrant/debs'
+
+# /tests/sw/{{ ansible_distribution| lower }}/{{ ansible_distribution_version }}/miniconda'
+# /tests/sw/{{ ansible_distribution| lower }}/{{ ansible_distribution_version }}/miniconda'
+
+# Help file
+
+myrepos_acemenu_help_file_template_path: '{{ fact_role_path }}/templates/bin/acemenu/help/example_aceadmin_helpfile.md.j2'
+
+# Resources
+
+myrepos_package_url      : "https://releases.hashicorp.com/vagrant/2.0.1/vagrant_2.0.1_i686.deb"
+#myrepos_checksum_url     : "https://releases.hashicorp.com/vagrant/2.0.1/ vagrant_2.0.1_SHA256SUMS"
+#myrepos_checksum_sig_url : "https://releases.hashicorp.com/vagrant/2.0.1/ vagrant_2.0.1_SHA256SUMS.sig"
+
+## links
+
+myrepos_default_link_force: yes
+
+########################################
+
+# Resources
+
+myrepos_resources_on_local:
+
+  myrepos_local_directories:
+
+    state       : 'directory'
+    path        : '{{ myrepos_controller_resources_dir }}'
+    owner       : '{{ myrepos_controller_user }}'
+    group       : '{{ myrepos_controller_user }}'
+    mode        : '0755'
+
+  myrepos_local_clones:
+
+    become: ''
+    repo  : 'https://github.com/cjsteel/script-bash-acemenu.git'
+    dest  : '{{ myrepos_controller_resources_dir }}/acemenu'
+    mode  : '0700'
+    clone : yes
+
+  myrepos_local_downloads:
+
+    url           : 'https://repo.continuum.io/miniconda/Miniconda2-4.3.30-Linux-x86_64.sh'
+    dest          : '{{ myrepos_controller_resources_dir }}/Miniconda2-latest-Linux-x86_64.sh'
+    owner         : '{{ myrepos_controller_user }}'
+    group         : '{{ myrepos_controller_user }}'
+    mode          : '0700'
+    checksum      : 'md5:bd1655b4b313f7b2a1f2e15b7b925d03'
+    resource_type : 'url'
+
+  myrepos_local_file_copies:
+
+    state : "copy" 
+    src   : './files/example_playbook.yml'
+    dest  : '{{ myrepos_controller_resources_dir }}/copy_test.yml'
+    owner : '{{ myrepos_controller_user }}'
+    group : '{{ myrepos_controller_user }}'
+    mode  : '0700'
+
+  myrepos_local_file_touches:
+
+    state : 'touch' 
+    path  : '{{ myrepos_controller_resources_dir }}/copy_test.yml'
+    owner : '{{ myrepos_controller_user }}'
+    group : '{{ myrepos_controller_user }}'
+    mode  : '0770'
+
+  myrepos_local_templated_files:
 
 
+    state: 'template'
+    src  : './templates/template_test.md.j2'
+    dest : '{{ myrepos_controller_resources_dir }}/test.md'
+    owner: '{{ myrepos_controller_user }}'
+    group: '{{ myrepos_controller_user }}'
+    mode : '0700'
 
-#PERSONAL_BIN_DIR="${HOME}/bin"
-#MR_DIR="${PERSONAL_BIN_DIR}/mr"
-#BASH_CONFIG_FILE=~/.bashrc
-#DATE_TIME_STAMP=`date +"%F_%H_%M_%S_%Z"`
+  myrepos_local_blocksinfile:
+
+    type : 'blockinfile'    
+    path : '{{ myrepos_controller_resources_dir }}/test.md'
+    owner: '{{ myrepos_controller_user }}'
+    group: '{{ myrepos_controller_user }}'
+    mode : '0700'
+    insertafter: "EOF"
+    block: |
+      # if running bash
+      if [ -n "$BASH_VERSION" ]; then
+          # include /opt/display/bin/display if it exists
+          if [ -f "/opt/display/bin/display" ]; then
+              PATH="/opt/display/bin:$PATH"
+
+       	. "/opt/display/bin/"
+          fi
+      fi
+    state: "present"
+
+  myrepos_local_standard_sym_links:
+
+    state: "link"
+    src  : '{{ myrepos_controller_resources_dir }}/test.md'
+    dest : '{{ myrepos_controller_resources_dir }}/my_local_link'
+    owner: '{{ myrepos_controller_user }}'
+    group: '{{ myrepos_controller_user }}'
+    mode : '0700'
+    force: '{{ myrepos_default_link_force }}'
+
+  myrepos_local_relative_sym_links:
+
+    link_name   : 'relative_link'
+    link_target : 'test.md'
+    link_dir    : '{{ myrepos_controller_resources_dir }}'
+    state: 'relative_link'
+#    owner       : '{{ myrepos_controller_user }}'
+#    group       : '{{ myrepos_controller_user }}'
+#    mode: '0700'
+
+myrepos_resources_on_remote:
+
+  myrepos_remote_directories:
+
+    state : 'directory' # options are 'directory' or 'absent'
+    path  : '/etc/skel/.local/bin'
+    owner : 'root'
+    group : 'root'
+    mode  : '0755'
+
+  myrepos_remote_clones:
+
+    clone : yes
+    become: true
+    repo  : 'https://github.com/csteel/myrepos.git'
+    dest  : '/etc/skel/.local/bin/myrepos'
+    update: yes
+
+  myrepos_remote_downloads:
+
+    url           : 'https://repo.continuum.io/miniconda/Miniconda2-4.3.30-Linux-x86_64.sh'
+    dest          : '{{ myrepos_deployment_resources_dir }}/Miniconda2-latest-Linux-x86_64.sh'
+    owner         : '{{ myrepos_deployment_user }}'
+    group         : '{{ myrepos_deployment_user }}'
+    mode          : '0700'
+    checksum      : 'md5:bd1655b4b313f7b2a1f2e15b7b925d03'
+    resource_type : 'url'
+
+  myrepos_remote_file_copies:
+
+    state : 'copy' 
+    src   : './files/ubuntu/16.04/etc/skel/.mrconfig'
+    dest  : '/etc/skel/.mrconfig'
+    owner : 'root'
+    group : 'root'
+    mode  : '0700'
+
+  myrepos_remote_file_touches:
+
+    state : 'touch' 
+    path  : '{{ myrepos_deployment_resources_dir }}/copy_test.yml'
+    owner : '{{ myrepos_deployment_user }}'
+    group : '{{ myrepos_deployment_user }}'
+    mode  : '0770'
+
+  myrepos_remote_templates_files:
+
+    state: 'template'
+    src  : './templates/template_test.md.j2'
+    dest : '{{ myrepos_deployment_resources_dir }}/test.md'
+    owner: '{{ myrepos_deployment_user }}'
+    group: '{{ myrepos_deployment_user }}'
+    mode : '0700'
+
+  myrepos_remote_blocksinfile:
+
+    type  : 'blockinfile'
+    path  : "/etc/skel/.mrconfig"
+    owner : 'root'
+    group : 'root'
+    mode  : '0700'
+    marker: '## {mark} ANSIBLE MANAGED BLOCK /etc/skel/.mrconfig entry for myrepos'
+    insertafter: "EOF"
+    block: |
+       [bin/acemenu]
+       checkout = git clone 'https://github.com/cjsteel/ansible-role-acemenu.git' 'acemenu'
+
+    state: "present"
+
+  myrepos_remote_standard_sym_links:
+
+    state: 'link'
+    src  : '{{ myrepos_deployment_resources_dir }}/test.md'
+    dest : '{{ myrepos_deployment_resources_dir }}/my_remote_link'
+    owner: '{{ myrepos_deployment_user }}'
+    group: '{{ myrepos_deployment_user }}'
+    mode : '0700'
+    force: '{{ myrepos_default_link_force }}'
+
+  myrepos_remote_relative_sym_links:
+
+    state: 'relative_link'
+    link_name   : 'mr'
+    link_target : 'myrepos/mr'
+    link_dir    : '/etc/skel/.local/bin'
+    owner       : 'root'
+    group       : 'root'
+    mode        : '0700'
+

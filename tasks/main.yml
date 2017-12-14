@@ -1,53 +1,20 @@
----
-# tasks file for ansible-role-myrepos
+--- # roles/myrepos/tasks/main.yml
 
-# previous install?
+- name: Load OS specific variables
+  include_vars: "{{ fact_role_path }}/vars/{{ ansible_os_family | lower }}.yml"
+  tags:
+    - myrepos
+    - install
 
-# was an myrepos directory created before now?
+- name: "Debug variable values"
+  include: "{{ fact_role_path }}/tasks/debug.yml"
+  when: myrepos_debug
+  tags:
+    - myrepos
+    - debug
 
-#- name: "Do we already have an myrepos directory?"
-#  stat:
-#    path: '{{ myrepos_dir_path }}'
-#  register: stat_myrepos_result
-#  when: myrepos_install_to_users_home == 'true'
-
-#- name: "check value of stat_myrepos_result"
-#  debug:
-#    var=stat_myrepos_result.stat.exists
-#  when: myrepos_install_to_users_home == 'true'
-
-# ensure for requirements
-
-## apt packages
-
-- name: "update apt cache"
-  become: true
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
-  tags: [ 'packages' ]
-
-- name: "Update apt cache and install myrepo reqirements package"
-  become: true
-  apt:
-    name : '{{ item }}'
-    state: 'present'
-  with_items:
-    - git
-    - perl-doc
-
-- name: "clone myrepos"
-  become: true
-  git:
-    repo   : 'https://github.com/csteel/myrepos.git' #git@github.com:csteel/myrepos.git
-    dest   : '{{ myrepos_dir_path }}'
-    version: '1.20160123'
-    accept_hostkey: 'no'
-  when: myrepos_install_to_users_home == 'true'
-  tags: [ 'myrepos', 'clone' ]
-
-
-# Remove users alias when myrepos_state != present
-
-
-
+- name: Run any OS specific tasks
+  include: "{{ fact_role_path }}/tasks/{{ ansible_os_family | lower }}.yml"
+  tags:
+    - myrepos
+    - install

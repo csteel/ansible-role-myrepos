@@ -1,0 +1,35 @@
+--- # roles/myrepos/tasks/debug.yml
+
+
+- debug: var=myrepos_controller_user
+- debug: var=myrepos_controller_home
+- debug: var=myrepos_controller_resources_home
+
+- debug: var=myrepos_deployment_user
+- debug: var=myrepos_deployment_home
+- debug: var=myrepos_deployment_resources_home
+
+#- debug: var=myrepos_major
+#- debug: var=myrepos_moderate_revision
+#- debug: var=myrepos_minor_revision
+#- debug: var=myrepos_build
+
+## Package #
+
+- debug: var=myrepos_package_state
+- debug: var=myrepos_package_version
+- debug: var=myrepos_package_filename
+
+# Resources
+
+- debug: var=myrepos_package_url
+- debug: var=myrepos_checksum_url
+- debug: var=myrepos_checksum_sig_url
+
+- debug: var=myrepos_controller_resources_dir
+- debug: var=myrepos_deployment_resources_dir
+
+# Directories
+
+- debug: var=myrepos_ensure_dirs_on_remote
+- debug: var=myrepos_ensure_dirs_on_local
