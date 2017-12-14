@@ -33,35 +33,6 @@
     - name: "Now that we are sure Python 2.7 is installed we can gather our facts"
       setup:
 
-  vars:
-
-## controller user vars
-
-    - project_controller_user_name      : '{{ fact_controller_user }}'
-    - project_controller_user_home      : '{{ fact_controller_home }}'
-    - project_controller_resources_home : '{{ project_controller_user_home }}'
-
-    - myrepos_controller_user           : '{{ project_controller_user_name }}'
-    - myrepos_controller_home           : '{{ project_controller_user_home }}'
-    - myrepos_controller_resources_root : '{{ project_controller_resources_home }}'
-
-## deployment user vars
-
-    - project_deployment_user_name      : 'ubuntu'
-    - project_deployment_user_home      : '/home/{{ project_deployment_user_name }}'
-    - project_deployment_resources_home : '{{ project_deployment_user_home }}'
-
-    - myrepos_deployment_user           : '{{ project_deployment_user_name }}'
-    - myrepos_deployment_home           : '{{ project_deployment_user_home }}'
-    - myrepos_deployment_resources_root : '{{ project_deployment_resources_home }}'
-
-# Role dependencies
-  roles:
-
-#    - epel
-#    - haveged
-#    - { role: gpg, ansible_user: ubuntu }
-
 - hosts: all
   become: false
   gather_facts: true
@@ -89,4 +60,5 @@
 
   roles:
 
-    - myrepos
+     - ../../
+#    - csteel.myrepos
