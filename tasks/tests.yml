@@ -1,0 +1,15 @@
+--- # myrepos/tasks/test.yml
+
+- name: "Test that myrepos mr command is installed and in users path on remote"
+  become: true
+  become_user: 'marcus'
+  become_flags: '--login'
+  shell: 'mr'
+  register: myrepos_mr_test
+  failed_when: not (myrepos_mr_test.stderr.find('Use mr help for man page') != -1)
+
+- name: "Debug value of myrepos_mr_test"
+  debug: var=myrepos_mr_test
+  when: myrepos_debug
+
+

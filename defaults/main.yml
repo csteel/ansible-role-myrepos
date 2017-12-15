@@ -2,6 +2,8 @@
 # roles/myrepos/defaults/main.yml
 
 myrepos_debug : false
+myrepos_deployment_testing: false
+
 
 myrepos_controller_user           : '{{ project_controller_user_name }}'
 myrepos_controller_home           : '{{ project_controller_user_home }}'
@@ -179,7 +181,16 @@ myrepos_resources_on_remote:
     checksum      : 'md5:bd1655b4b313f7b2a1f2e15b7b925d03'
     resource_type : 'url'
 
-  myrepos_remote_file_copies:
+  myrepos_remote_file_copies_etc_skel_.profile:
+
+    state : 'copy'
+    src   : './files/ubuntu/16.04/etc/skel/.profile'
+    dest  : '/etc/skel/.profile'
+    owner : 'root'
+    group : 'root'
+    mode  : '0700'
+
+  myrepos_remote_file_copies_etc_skel_.mrconfig:
 
     state : 'copy' 
     src   : './files/ubuntu/16.04/etc/skel/.mrconfig'

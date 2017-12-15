@@ -28,7 +28,7 @@
       setup:
 
 - hosts: all
-  become: false
+  become: true
   gather_facts: true
   vars:
 
@@ -51,6 +51,22 @@
     - myrepos_deployment_user           : '{{ project_deployment_user_name }}'
     - myrepos_deployment_home           : '{{ project_deployment_user_home }}'
     - myrepos_deployment_resources_root : '{{ project_deployment_resources_home }}'
+
+
+# create password with:
+# python -c 'import crypt; print crypt.crypt("2017Fido", "$1$SomeSalt$")'
+
+    - myrepos_debug: true
+    - myrepos_deployment_testing: true
+
+    - users:
+      - username: marcus
+        name: Marcus Tester
+        groups: ['users','systemd-journal']
+        uid: 2250
+        home: '/home/marcus'
+#        password: $1$SomeSalt$CFO2yYeZ2AUXwy56eXFqB/
+        shell: '/bin/bash'
 
   roles:
 
