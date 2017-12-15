@@ -1,42 +1,36 @@
 ---
 # roles/myrepos/defaults/main.yml
 
+# Debug and testing variables
+
 myrepos_debug : false
+myrepos_deployment_testing: false
 
-myrepos_controller_user           : '{{ project_controller_user_name }}'
-myrepos_controller_home           : '{{ project_controller_user_home }}'
-myrepos_controller_resources_root : '{{ project_controller_resources_home }}'
+# Controller and deployment variables
 
-myrepos_deployment_user           : '{{ project_deployment_user_name }}'
-myrepos_deployment_home           : '{{ project_deployment_user_home }}'
-myrepos_deployment_resources_root : '{{ project_deployment_resources_home }}'
+myrepos_controller_user : '{{ project_controller_user }}'
+myrepos_controller_home : '{{ project_controller_home }}'
 
-## atomic versioning example
-#
-#myrepos_major             : '0'
-#myrepos_moderate_revision : '0'
-#myrepos_minor_revision    : '1'
-#myrepos_build             : ''
+myrepos_controller_resources_root : '{{ myrepos_controller_home }}/sw\
+/{{ ansible_distribution| lower }}/{{ ansible_distribution_version }}/myrepos'
 
-## Package #
+myrepos_deployment_user : '{{ project_deployment_user }}'
+myrepos_deployment_home : '{{ project_deployment_home }}'
 
-myrepos_package_state    : 'present'
-myrepos_package_version  : '2.0.1'
-myrepos_package_filename : "vagrant_{{ myrepos_package_version }}_i686.deb"
-
-myrepos_controller_resources_dir : '{{ myrepos_controller_resources_root }}/tests/sw/vagrant/debs'
-myrepos_deployment_resources_dir : '{{ myrepos_deployment_resources_root }}/tests/sw/vagrant/debs'
-
-# /tests/sw/{{ ansible_distribution| lower }}/{{ ansible_distribution_version }}/miniconda'
-# /tests/sw/{{ ansible_distribution| lower }}/{{ ansible_distribution_version }}/miniconda'
+myrepos_deployment_resources_root : '{{ myrepos_deployment_home }}/sw\
+/{{ ansible_distribution| lower }}/{{ ansible_distribution_version }}/myrepos'
 
 # Help file
 
-myrepos_acemenu_help_file_template_path: '{{ fact_role_path }}/templates/bin/acemenu/help/example_aceadmin_helpfile.md.j2'
+myrepos_acemenu_help_file_template_path: '{{ fact_role_path }}\
+                                          /templates/bin/acemenu\
+                                          /help/example_aceadmin_helpfile.md.j2'
 
 # Resources
 
-myrepos_package_url      : "https://releases.hashicorp.com/vagrant/2.0.1/vagrant_2.0.1_i686.deb"
+## URL downloads
+
+#myrepos_package_url      : "https://releases.hashicorp.com/vagrant/2.0.1/vagrant_2.0.1_i686.deb"
 #myrepos_checksum_url     : "https://releases.hashicorp.com/vagrant/2.0.1/ vagrant_2.0.1_SHA256SUMS"
 #myrepos_checksum_sig_url : "https://releases.hashicorp.com/vagrant/2.0.1/ vagrant_2.0.1_SHA256SUMS.sig"
 
@@ -53,99 +47,14 @@ myrepos_resources_on_local:
   myrepos_local_directories:
 
     state       : 'directory'
-    path        : '{{ myrepos_controller_resources_dir }}'
+    path        : '{{ myrepos_controller_resources_root }}'
     owner       : '{{ myrepos_controller_user }}'
     group       : '{{ myrepos_controller_user }}'
     mode        : '0755'
 
-  myrepos_local_clones:
-
-    become: ''
-    repo  : 'https://github.com/cjsteel/script-bash-acemenu.git'
-    dest  : '{{ myrepos_controller_resources_dir }}/acemenu'
-    mode  : '0700'
-    clone : yes
-
-  myrepos_local_downloads:
-
-    url           : 'https://repo.continuum.io/miniconda/Miniconda2-4.3.30-Linux-x86_64.sh'
-    dest          : '{{ myrepos_controller_resources_dir }}/Miniconda2-latest-Linux-x86_64.sh'
-    owner         : '{{ myrepos_controller_user }}'
-    group         : '{{ myrepos_controller_user }}'
-    mode          : '0700'
-    checksum      : 'md5:bd1655b4b313f7b2a1f2e15b7b925d03'
-    resource_type : 'url'
-
-  myrepos_local_file_copies:
-
-    state : "copy" 
-    src   : './files/example_playbook.yml'
-    dest  : '{{ myrepos_controller_resources_dir }}/copy_test.yml'
-    owner : '{{ myrepos_controller_user }}'
-    group : '{{ myrepos_controller_user }}'
-    mode  : '0700'
-
-  myrepos_local_file_touches:
-
-    state : 'touch' 
-    path  : '{{ myrepos_controller_resources_dir }}/copy_test.yml'
-    owner : '{{ myrepos_controller_user }}'
-    group : '{{ myrepos_controller_user }}'
-    mode  : '0770'
-
-  myrepos_local_templated_files:
-
-
-    state: 'template'
-    src  : './templates/template_test.md.j2'
-    dest : '{{ myrepos_controller_resources_dir }}/test.md'
-    owner: '{{ myrepos_controller_user }}'
-    group: '{{ myrepos_controller_user }}'
-    mode : '0700'
-
-  myrepos_local_blocksinfile:
-
-    type : 'blockinfile'    
-    path : '{{ myrepos_controller_resources_dir }}/test.md'
-    owner: '{{ myrepos_controller_user }}'
-    group: '{{ myrepos_controller_user }}'
-    mode : '0700'
-    insertafter: "EOF"
-    block: |
-      # if running bash
-      if [ -n "$BASH_VERSION" ]; then
-          # include /opt/display/bin/display if it exists
-          if [ -f "/opt/display/bin/display" ]; then
-              PATH="/opt/display/bin:$PATH"
-
-       	. "/opt/display/bin/"
-          fi
-      fi
-    state: "present"
-
-  myrepos_local_standard_sym_links:
-
-    state: "link"
-    src  : '{{ myrepos_controller_resources_dir }}/test.md'
-    dest : '{{ myrepos_controller_resources_dir }}/my_local_link'
-    owner: '{{ myrepos_controller_user }}'
-    group: '{{ myrepos_controller_user }}'
-    mode : '0700'
-    force: '{{ myrepos_default_link_force }}'
-
-  myrepos_local_relative_sym_links:
-
-    link_name   : 'relative_link'
-    link_target : 'test.md'
-    link_dir    : '{{ myrepos_controller_resources_dir }}'
-    state: 'relative_link'
-#    owner       : '{{ myrepos_controller_user }}'
-#    group       : '{{ myrepos_controller_user }}'
-#    mode: '0700'
-
 myrepos_resources_on_remote:
 
-  myrepos_remote_directories:
+  myrepos_remote_directory_etc_skel_.local_bin':
 
     state : 'directory' # options are 'directory' or 'absent'
     path  : '/etc/skel/.local/bin'
@@ -153,10 +62,18 @@ myrepos_resources_on_remote:
     group : 'root'
     mode  : '0755'
 
-  myrepos_remote_directories2:
+  myrepos_remote_directory_etc_skel_.local_bin_acemenu':
 
     state : 'directory' # options are 'directory' or 'absent'
-    path  : '{{ myrepos_deployment_resources_dir }}'
+    path  : '/etc/skel/.local/bin/acemenu'
+    owner : 'root'
+    group : 'root'
+    mode  : '0755'
+
+  myrepos_remote_directory_deployment_resources_dir:
+
+    state : 'directory' # options are 'directory' or 'absent'
+    path  : '{{ myrepos_deployment_resources_root }}'
     owner : '{{ myrepos_deployment_user }}'
     group : '{{ myrepos_deployment_user }}'
     mode  : '0755'
@@ -172,14 +89,23 @@ myrepos_resources_on_remote:
   myrepos_remote_downloads:
 
     url           : 'https://repo.continuum.io/miniconda/Miniconda2-4.3.30-Linux-x86_64.sh'
-    dest          : '{{ myrepos_deployment_resources_dir }}/Miniconda2-latest-Linux-x86_64.sh'
+    dest          : '{{ myrepos_deployment_resources_root }}/Miniconda2-latest-Linux-x86_64.sh'
     owner         : '{{ myrepos_deployment_user }}'
     group         : '{{ myrepos_deployment_user }}'
     mode          : '0700'
     checksum      : 'md5:bd1655b4b313f7b2a1f2e15b7b925d03'
     resource_type : 'url'
 
-  myrepos_remote_file_copies:
+  myrepos_remote_file_copies_etc_skel_.profile:
+
+    state : 'copy'
+    src   : './files/ubuntu/16.04/etc/skel/.profile'
+    dest  : '/etc/skel/.profile'
+    owner : 'root'
+    group : 'root'
+    mode  : '0700'
+
+  myrepos_remote_file_copies_etc_skel_.mrconfig:
 
     state : 'copy' 
     src   : './files/ubuntu/16.04/etc/skel/.mrconfig'
@@ -191,7 +117,7 @@ myrepos_resources_on_remote:
   myrepos_remote_file_touches:
 
     state : 'touch' 
-    path  : '{{ myrepos_deployment_resources_dir }}/copy_test.yml'
+    path  : '{{ myrepos_deployment_resources_root }}/copy_test.yml'
     owner : '{{ myrepos_deployment_user }}'
     group : '{{ myrepos_deployment_user }}'
     mode  : '0770'
@@ -200,7 +126,7 @@ myrepos_resources_on_remote:
 
     state: 'template'
     src  : './templates/template_test.md.j2'
-    dest : '{{ myrepos_deployment_resources_dir }}/test.md'
+    dest : '{{ myrepos_deployment_resources_root }}/test.md'
     owner: '{{ myrepos_deployment_user }}'
     group: '{{ myrepos_deployment_user }}'
     mode : '0700'
@@ -223,8 +149,8 @@ myrepos_resources_on_remote:
   myrepos_remote_standard_sym_links:
 
     state: 'link'
-    src  : '{{ myrepos_deployment_resources_dir }}/test.md'
-    dest : '{{ myrepos_deployment_resources_dir }}/my_remote_link'
+    src  : '{{ myrepos_deployment_resources_root }}/test.md'
+    dest : '{{ myrepos_deployment_resources_root }}/my_remote_link'
     owner: '{{ myrepos_deployment_user }}'
     group: '{{ myrepos_deployment_user }}'
     mode : '0700'

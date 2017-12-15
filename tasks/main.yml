@@ -18,3 +18,11 @@
   tags:
     - myrepos
     - install
+
+- name: "Run any tests"
+  include: "{{ fact_role_path }}/tasks/tests.yml"
+  when: myrepos_deployment_testing
+  tags:
+    - myrepos
+    - test
+

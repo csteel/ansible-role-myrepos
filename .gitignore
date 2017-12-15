@@ -1,14 +1,14 @@
 # temp files
 *~
-.swp
+*.swp
 
 # others
 
 *.log
-.private
-.prv
-.retry
-vagrant.retry
-.vagrant
+.galaxy_install_info
+*.private
+*.prv
+*.retry
+*.vagrant
 .vault
 
