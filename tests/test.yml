@@ -15,14 +15,14 @@
     - set_fact: fact_role_path="{{ lookup('pipe','pwd')|dirname }}"
     - debug: var=fact_role_path
 
-    - name: "Ensure that our target has python2.x for Ansible gather facts (Sometimes Ubuntu 16.04 does not)"
+    - name: "Ensure that our target has python2.x for Ansible gather facts as some Ubuntu 16.04 vagrant boxes do not)"
+      become_user: root
       raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
       register: output
       changed_when:
        - output.stdout != ""
        - output.stdout != "\r\n"
       ignore_errors: yes
-
 
     - name: "Now that we are sure Python 2.7 is installed we can gather our facts"
       setup:

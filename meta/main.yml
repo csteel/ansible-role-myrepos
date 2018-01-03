@@ -6,7 +6,7 @@ dependencies:
     resources_on_local : '{{ myrepos_resources_on_local }}'
     resources_on_remote: '{{ myrepos_resources_on_remote }}'
 
-  - role: singleplatform-eng.users
+#  - role: singleplatform-eng.users
 
 galaxy_info:
   author: 'Christopher Steel'
