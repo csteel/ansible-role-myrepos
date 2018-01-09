@@ -44,6 +44,8 @@
     - myrepos_controller_resources_root : '{{ myrepos_controller_home }}/sw\
 /{{ ansible_distribution| lower }}/{{ ansible_distribution_version }}/myrepos'
 
+    - myrepos_role_path: '{{ fact_role_path }}'
+
 ## deployment user vars
 
     - project_deployment_user      : 'ubuntu'

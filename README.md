@@ -1,6 +1,6 @@
 # roles/myrepos/README.md
 
-[![Build Status](https://travis-ci.org/cjsteel/myrepos.svg?branch=master)](https://travis-ci.org/cjsteel/myrepos)
+[![Build Status](https://travis-ci.org/csteel/myrepos.svg?branch=master)](https://travis-ci.org/csteel/myrepos)
 [![Travis CI](http://img.shields.io/travis/csteel/myrepos/default.svg?style=flat)](http://travis-ci.org/csteel/myrepos/default)
 [![Platforms](http://img.shields.io/badge/platforms-debian%20/%20ubuntu-lightgrey.svg?style=flat)](#)
 

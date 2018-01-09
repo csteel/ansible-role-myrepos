@@ -6,17 +6,9 @@ dependencies:
     resources_on_local : '{{ myrepos_resources_on_local }}'
     resources_on_remote: '{{ myrepos_resources_on_remote }}'
 
-#  - role: singleplatform-eng.users
-
   - role: singleplatform-eng.users
-    users:
-      - username: marcus
-        name: Marcus Tester
-        groups: ['users','systemd-journal']
-        uid: 2250
-        home: '/home/marcus'
-#        password: $1$SomeSalt$CFO2yYeZ2AUXwy56eXFqB/
-        shell: '/bin/bash'
+    users_delete: '{{ myrepos_users_delete }}'
+    users       : '{{ myrepos_users }}'
 
 galaxy_info:
   author: 'Christopher Steel'

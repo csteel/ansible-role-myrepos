@@ -40,6 +40,25 @@ myrepos_default_link_force: yes
 
 ########################################
 
+## Users
+
+myrepos_users_delete:
+  - username: marcus
+    name: Marus Tester
+    uid: 2250
+    remove: yes
+    force: yes
+
+myrepos_users:
+  - username: marcus
+    name: Marcus Tester
+    groups: ['users','systemd-journal']
+    uid: 2250
+    home: '/home/marcus'
+#    password: $1$SomeSalt$CFO2yYeZ2AUXwy56eXFqB/
+    shell: '/bin/bash'
+
+
 # Resources
 
 myrepos_resources_on_local:
@@ -99,7 +118,7 @@ myrepos_resources_on_remote:
   myrepos_remote_file_copies_etc_skel_.profile:
 
     state : 'copy'
-    src   : './files/ubuntu/16.04/etc/skel/.profile'
+    src   : '{{ myrepos_role_path }}/files/ubuntu/16.04/etc/skel/.profile'
     dest  : '/etc/skel/.profile'
     owner : 'root'
     group : 'root'
@@ -108,7 +127,7 @@ myrepos_resources_on_remote:
   myrepos_remote_file_copies_etc_skel_.mrconfig:
 
     state : 'copy' 
-    src   : './files/ubuntu/16.04/etc/skel/.mrconfig'
+    src   : '{{ myrepos_role_path }}/files/ubuntu/16.04/etc/skel/.mrconfig'
     dest  : '/etc/skel/.mrconfig'
     owner : 'root'
     group : 'root'
@@ -125,7 +144,7 @@ myrepos_resources_on_remote:
   myrepos_remote_templates_files:
 
     state: 'template'
-    src  : './templates/template_test.md.j2'
+    src  : '{{ myrepos_role_path }}/templates/template_test.md.j2'
     dest : '{{ myrepos_deployment_resources_root }}/test.md'
     owner: '{{ myrepos_deployment_user }}'
     group: '{{ myrepos_deployment_user }}'
