@@ -63,7 +63,7 @@
     - myrepos_debug: true
     - myrepos_deployment_testing: true
 
-    - users:
+    - myrepos_users:
       - username: marcus
         name: Marcus Tester
         groups: ['users','systemd-journal']
@@ -71,6 +71,13 @@
         home: '/home/marcus'
 #        password: $1$SomeSalt$CFO2yYeZ2AUXwy56eXFqB/
         shell: '/bin/bash'
+
+    - myrepos_users_delete:
+      - username: marcus
+        name: Marus Tester
+        uid: 2250
+        remove: yes
+        force: yes
 
   roles:
 
