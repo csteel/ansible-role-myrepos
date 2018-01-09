@@ -8,6 +8,16 @@ dependencies:
 
 #  - role: singleplatform-eng.users
 
+  - role: singleplatform-eng.users
+    users:
+      - username: marcus
+        name: Marcus Tester
+        groups: ['users','systemd-journal']
+        uid: 2250
+        home: '/home/marcus'
+#        password: $1$SomeSalt$CFO2yYeZ2AUXwy56eXFqB/
+        shell: '/bin/bash'
+
 galaxy_info:
   author: 'Christopher Steel'
   description: 'myrepos is used to...'
