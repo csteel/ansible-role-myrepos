@@ -7,20 +7,20 @@
     - install
 
 - name: "Debug variable values"
-  include: "{{ fact_role_path }}/tasks/debug.yml"
+  include_tasks: "{{ fact_role_path }}/tasks/debug.yml"
   when: myrepos_debug
   tags:
     - myrepos
     - debug
 
 - name: Run any OS specific tasks
-  include: "{{ fact_role_path }}/tasks/{{ ansible_os_family | lower }}.yml"
+  include_tasks: "{{ fact_role_path }}/tasks/{{ ansible_os_family | lower }}.yml"
   tags:
     - myrepos
     - install
 
 - name: "Run any tests"
-  include: "{{ fact_role_path }}/tasks/tests.yml"
+  include_tasks: "{{ fact_role_path }}/tasks/tests.yml"
   when: myrepos_deployment_testing
   tags:
     - myrepos
